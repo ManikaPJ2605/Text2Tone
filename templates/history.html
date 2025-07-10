@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audio History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='bg.gif') }}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            margin: 80px auto;
+            width: 70%;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+        li {
+            margin: 15px 0;
+        }
+        a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 15px;
+            background-color: #00bcd4;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #0097a7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎧 Audio History</h1>
+        {% if history %}
+            <ul>
+                {% for file in history %}
+                    <li>
+                        <a href="{{ url_for('static', filename=file) }}" download>{{ file }}</a>
+                        <audio controls>
+                            <source src="{{ url_for('static', filename=file) }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('clear_history') }}" class="btn">Clear History</a>
+            <a href="{{ url_for('home') }}" class="btn">🔙 Back</a>
+        {% else %}
+            <p>No audio history found.</p>
+            <a href="{{ url_for('home') }}" class="btn">🔙 Back</a>
+        {% endif %}
+    </div>
+</body>
+</html>

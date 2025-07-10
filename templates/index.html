@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text to Speech App</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🎤 Text to Speech Generator</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      <label for="text">Enter text:</label>
+      <textarea name="text" id="text" rows="4" placeholder="Type something..."></textarea>
+
+      <label for="voice">Select Voice:</label>
+      <select name="voice" id="voice">
+        {% for voice in voices %}
+          <option value="{{ voice.voice_id }}">{{ voice.name }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">🔊 Generate Speech</button>
+    </form>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <label for="textfile">Upload .txt File:</label>
+      <input type="file" name="textfile" accept=".txt" required />
+      <input type="hidden" name="voice" value="{{ voices[0].voice_id }}" />
+      <button type="submit">📄 Convert File</button>
+    </form>
+
+    {% if audio_url %}
+      <h2>▶️ Playback</h2>
+      <audio controls>
+        <source src="/{{ audio_url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    {% endif %}
+
+    {% if history %}
+      <h2>🕘 History</h2>
+      <ul>
+        {% for file in history %}
+          <li><a href="/{{ file }}" download>{{ file.split('/')[-1] }}</a></li>
+        {% endfor %}
+      </ul>
+      <a href="/clear_history"><button class="clear-btn">🧹 Clear History</button></a>
+    {% endif %}
+  </div>
+  <div style="margin-top: 20px;">
+  <a href="/history" class="btn btn-info">🔊 View History</a>
+  <a href="/clear_history" class="btn btn-danger" onclick="return confirm('Are you sure?')">🗑️ Clear History</a>
+</div>
+
+</body>
+</html>
