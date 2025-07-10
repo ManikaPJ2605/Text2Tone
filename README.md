@@ -28,8 +28,6 @@ This is a full-featured Text-to-Speech (TTS) web application built using **Flask
 
 ---
 
-## 🖼️ Screenshots
-
 * ✅ Login Page
 * ✅ Home with TTS generation
 * ✅ View History & Clear History
